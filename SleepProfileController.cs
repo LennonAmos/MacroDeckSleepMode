@@ -14,7 +14,11 @@ public enum SleepTheme
     Aurora,
     Ocean,
     Sunset,
-    Midnight
+    Midnight,
+    Nebula,
+    Forest,
+    Ember,
+    Glacier
 }
 
 internal static class SleepProfileController
@@ -231,6 +235,10 @@ internal static class SleepProfileController
             SleepTheme.Ocean => "MacroDeck Sleep Ocean",
             SleepTheme.Sunset => "MacroDeck Sleep Sunset",
             SleepTheme.Midnight => "MacroDeck Sleep Midnight",
+            SleepTheme.Nebula => "MacroDeck Sleep Nebula",
+            SleepTheme.Forest => "MacroDeck Sleep Forest",
+            SleepTheme.Ember => "MacroDeck Sleep Ember",
+            SleepTheme.Glacier => "MacroDeck Sleep Glacier",
             _ => "MacroDeck Sleep Aurora"
         };
     }
@@ -290,7 +298,11 @@ internal static class SleepProfileController
             SleepTheme.Aurora.ToString(),
             SleepTheme.Ocean.ToString(),
             SleepTheme.Sunset.ToString(),
-            SleepTheme.Midnight.ToString()
+            SleepTheme.Midnight.ToString(),
+            SleepTheme.Nebula.ToString(),
+            SleepTheme.Forest.ToString(),
+            SleepTheme.Ember.ToString(),
+            SleepTheme.Glacier.ToString()
         });
     }
 

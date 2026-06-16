@@ -27,7 +27,11 @@ public sealed class Main : MacroDeckPlugin
             new SetSleepThemeAuroraAction(),
             new SetSleepThemeOceanAction(),
             new SetSleepThemeSunsetAction(),
-            new SetSleepThemeMidnightAction()
+            new SetSleepThemeMidnightAction(),
+            new SetSleepThemeNebulaAction(),
+            new SetSleepThemeForestAction(),
+            new SetSleepThemeEmberAction(),
+            new SetSleepThemeGlacierAction()
         };
     }
 }

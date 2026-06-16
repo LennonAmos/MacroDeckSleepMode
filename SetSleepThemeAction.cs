@@ -36,3 +36,23 @@ public sealed class SetSleepThemeMidnightAction : SetSleepThemeAction
 {
     protected override SleepTheme Theme => SleepTheme.Midnight;
 }
+
+public sealed class SetSleepThemeNebulaAction : SetSleepThemeAction
+{
+    protected override SleepTheme Theme => SleepTheme.Nebula;
+}
+
+public sealed class SetSleepThemeForestAction : SetSleepThemeAction
+{
+    protected override SleepTheme Theme => SleepTheme.Forest;
+}
+
+public sealed class SetSleepThemeEmberAction : SetSleepThemeAction
+{
+    protected override SleepTheme Theme => SleepTheme.Ember;
+}
+
+public sealed class SetSleepThemeGlacierAction : SetSleepThemeAction
+{
+    protected override SleepTheme Theme => SleepTheme.Glacier;
+}

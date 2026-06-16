@@ -18,6 +18,10 @@ Adds these actions:
 - `Sleep Theme: Ocean`
 - `Sleep Theme: Sunset`
 - `Sleep Theme: Midnight`
+- `Sleep Theme: Nebula`
+- `Sleep Theme: Forest`
+- `Sleep Theme: Ember`
+- `Sleep Theme: Glacier`
 
 ## Recommended Setup
 
@@ -40,6 +44,10 @@ The matching themed icon packs are:
 - `MacroDeck Sleep Ocean`
 - `MacroDeck Sleep Sunset`
 - `MacroDeck Sleep Midnight`
+- `MacroDeck Sleep Nebula`
+- `MacroDeck Sleep Forest`
+- `MacroDeck Sleep Ember`
+- `MacroDeck Sleep Glacier`
 
 Creates and updates these variables:
 
