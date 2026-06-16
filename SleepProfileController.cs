@@ -51,6 +51,11 @@ internal static class SleepProfileController
         BuildSleepProfileLayout();
     }
 
+    public static SleepTheme GetCurrentTheme()
+    {
+        return GetTheme();
+    }
+
     public static bool GoToSleepProfile(string clientId)
     {
         EnsureSleepProfileLayout();
