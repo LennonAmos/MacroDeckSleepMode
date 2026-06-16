@@ -53,14 +53,14 @@ internal static class SleepModeController
             return;
         }
 
-        VariableManager.SetValue("macrodeck_sleeping", sleeping, VariableType.Bool, plugin, Array.Empty<string>());
-        VariableManager.SetValue("macrodeck_sleep_text", sleeping ? "Macrodeck Sleeping" : string.Empty, VariableType.String, plugin, Array.Empty<string>());
-        VariableManager.SetValue("macrodeck_sleep_frame", frame, VariableType.Integer, plugin, Array.Empty<string>());
+        VariableManager.SetValue("macrodeck_sleeping_dev", sleeping, VariableType.Bool, plugin, Array.Empty<string>());
+        VariableManager.SetValue("macrodeck_sleep_text_dev", sleeping ? "Macrodeck Sleeping" : string.Empty, VariableType.String, plugin, Array.Empty<string>());
+        VariableManager.SetValue("macrodeck_sleep_frame_dev", frame, VariableType.Integer, plugin, Array.Empty<string>());
 
         var tiles = BuildTiles();
         for (var i = 0; i < TileCount; i++)
         {
-            VariableManager.SetValue($"macrodeck_sleep_tile_{i + 1:00}", tiles[i], VariableType.String, plugin, Array.Empty<string>());
+            VariableManager.SetValue($"macrodeck_sleep_tile_dev_{i + 1:00}", tiles[i], VariableType.String, plugin, Array.Empty<string>());
         }
     }
 

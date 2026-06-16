@@ -8,7 +8,7 @@ public sealed class Main : MacroDeckPlugin
     public Main()
     {
         SetPluginMetadata("Name", "MacroDeck Sleep Mode");
-        SetPluginMetadata("Version", "1.0.2");
+        SetPluginMetadata("Version", "1.0.3");
         SetPluginMetadata("Author", "lenno");
 
         if (!PluginManager.UpdatedPlugins.Contains(this))

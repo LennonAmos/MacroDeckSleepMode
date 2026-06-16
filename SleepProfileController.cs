@@ -26,7 +26,7 @@ internal readonly record struct GridSize(int Rows, int Columns);
 internal static class SleepProfileController
 {
     public const string SleepProfileName = "Macrodeck Sleeping";
-    private const string ThemeVariableName = "macrodeck_sleep_theme";
+    private const string ThemeVariableName = "macrodeck_sleep_theme_dev";
     private static readonly Dictionary<string, string> PreviousProfileByClient = new();
     private static readonly object ThemeGate = new();
     private static MacroDeckPlugin? plugin;
@@ -181,7 +181,7 @@ internal static class SleepProfileController
                     IconOn = icon,
                     BackColorOff = Color.FromArgb(24, 24, 28),
                     BackColorOn = Color.FromArgb(34, 34, 40),
-                    StateBindingVariable = "macrodeck_sleeping",
+                    StateBindingVariable = "macrodeck_sleeping_dev",
                     LabelOff = CreateTileLabel(),
                     LabelOn = CreateTileLabel(),
                     Actions = [new WakeFromSleepProfileAction()],

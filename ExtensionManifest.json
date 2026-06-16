@@ -1,11 +1,11 @@
-﻿{
-    "type":  "Plugin",
-    "name":  "MacroDeck Sleep Mode",
-    "author":  "lenno",
-    "packageId":  "lenno.MacroDeckSleepMode",
-    "version":  "1.0.2",
-    "target-plugin-api-version":  40,
-    "target-macro-deck-version":  "2.14.1",
-    "repository":  "https://github.com/LennonAmos/MacroDeckSleepMode",
-    "dll":  "MacroDeckSleepMode.dll"
+{
+  "type": "Plugin",
+  "name": "MacroDeck Sleep Mode",
+  "author": "lenno",
+  "packageId": "lenno.MacroDeckSleepMode",
+  "version": "1.0.3",
+  "target-plugin-api-version": 40,
+  "target-macro-deck-version": "2.14.1",
+  "repository": "https://github.com/LennonAmos/MacroDeckSleepMode",
+  "dll": "MacroDeckSleepMode.dll"
 }

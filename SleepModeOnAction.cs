@@ -9,7 +9,7 @@ public sealed class SleepModeOnAction : PluginAction
 
     public override string Description => "Turns sleep-mode variables on.";
 
-    public override string BindableVariable => "macrodeck_sleeping";
+    public override string BindableVariable => "macrodeck_sleeping_dev";
 
     public override void Trigger(string clientId, ActionButton actionButton)
     {
