@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using SuchByte.MacroDeck.ExtensionStore;
+using SuchByte.MacroDeck.Icons;
 
 namespace MacroDeckSleepMode;
 
@@ -6,6 +8,7 @@ internal sealed class SleepModeConfigurator : Form
 {
     private readonly ComboBox themePicker;
     private readonly Label requirementLabel;
+    private readonly Button installButton;
 
     public SleepModeConfigurator()
     {
@@ -16,7 +19,7 @@ internal sealed class SleepModeConfigurator : Form
         MinimizeBox = false;
         ShowIcon = false;
         Width = 430;
-        Height = 300;
+        Height = 335;
 
         var title = new Label
         {
@@ -51,17 +54,27 @@ internal sealed class SleepModeConfigurator : Form
             Left = 24,
             Top = 128,
             Width = 360,
-            Height = 44,
+            Height = 42,
             ForeColor = Color.FromArgb(214, 214, 214)
         };
         themePicker.SelectedIndexChanged += (_, _) => UpdateRequirementLabel();
         UpdateRequirementLabel();
 
+        installButton = new Button
+        {
+            Text = "Install required icon pack",
+            Left = 24,
+            Top = 174,
+            Width = 360,
+            Height = 34
+        };
+        installButton.Click += (_, _) => InstallRequiredIconPack();
+
         var buildButton = new Button
         {
             Text = "Rebuild sleep profile",
             Left = 24,
-            Top = 182,
+            Top = 222,
             Width = 170,
             Height = 34
         };
@@ -75,7 +88,7 @@ internal sealed class SleepModeConfigurator : Form
         {
             Text = "Open settings folder",
             Left = 214,
-            Top = 182,
+            Top = 222,
             Width = 170,
             Height = 34
         };
@@ -95,7 +108,7 @@ internal sealed class SleepModeConfigurator : Form
             Text = "Save",
             DialogResult = DialogResult.OK,
             Left = 214,
-            Top = 228,
+            Top = 268,
             Width = 80,
             Height = 30
         };
@@ -106,7 +119,7 @@ internal sealed class SleepModeConfigurator : Form
             Text = "Close",
             DialogResult = DialogResult.Cancel,
             Left = 304,
-            Top = 228,
+            Top = 268,
             Width = 80,
             Height = 30
         };
@@ -117,6 +130,7 @@ internal sealed class SleepModeConfigurator : Form
             themeLabel,
             themePicker,
             requirementLabel,
+            installButton,
             buildButton,
             folderButton,
             saveButton,
@@ -129,15 +143,75 @@ internal sealed class SleepModeConfigurator : Form
 
     private void UpdateRequirementLabel()
     {
+        var theme = GetSelectedTheme();
+        var iconPackName = SleepProfileController.GetIconPackNameForTheme(theme);
+        requirementLabel.Text = IsIconPackInstalled(theme)
+            ? $"Installed icon pack: {iconPackName}"
+            : $"Required icon pack missing: {iconPackName}";
+        installButton.Enabled = !IsIconPackInstalled(theme);
+        installButton.Text = IsIconPackInstalled(theme)
+            ? "Required icon pack installed"
+            : "Install required icon pack";
+    }
+
+    private void InstallRequiredIconPack()
+    {
+        var theme = GetSelectedTheme();
+        if (IsIconPackInstalled(theme))
+        {
+            UpdateRequirementLabel();
+            return;
+        }
+
+        var packageId = SleepProfileController.GetIconPackPackageIdForTheme(theme);
+        ExtensionStoreHelper.InstallIconPackById(packageId);
+        UpdateRequirementLabel();
+    }
+
+    private bool ConfirmRequiredPack(SleepTheme theme)
+    {
+        if (IsIconPackInstalled(theme))
+        {
+            return true;
+        }
+
+        var iconPackName = SleepProfileController.GetIconPackNameForTheme(theme);
+        var result = MessageBox.Show(
+            this,
+            $"{iconPackName} is required for this theme. Install it now?",
+            Text,
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+        if (result != DialogResult.Yes)
+        {
+            return false;
+        }
+
+        InstallRequiredIconPack();
+        return IsIconPackInstalled(theme);
+    }
+
+    private static bool IsIconPackInstalled(SleepTheme theme)
+    {
+        var packageId = SleepProfileController.GetIconPackPackageIdForTheme(theme);
+        return IconManager.IconPacks.Any(iconPack =>
+            iconPack.PackageId.Equals(packageId, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private SleepTheme GetSelectedTheme()
+    {
         var selected = themePicker.SelectedItem?.ToString() ?? SleepTheme.Aurora.ToString();
-        requirementLabel.Text = $"Required icon pack: MacroDeck Sleep {selected}";
+        return Enum.TryParse<SleepTheme>(selected, out var theme) ? theme : SleepTheme.Aurora;
     }
 
     private void SaveTheme()
     {
-        if (themePicker.SelectedItem is not string selected ||
-            !Enum.TryParse<SleepTheme>(selected, out var theme))
+        var theme = GetSelectedTheme();
+
+        if (!ConfirmRequiredPack(theme))
         {
+            DialogResult = DialogResult.None;
             return;
         }
 

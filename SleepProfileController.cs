@@ -60,6 +60,16 @@ internal static class SleepProfileController
         return GetTheme();
     }
 
+    public static string GetIconPackNameForTheme(SleepTheme theme)
+    {
+        return GetIconPackName(theme);
+    }
+
+    public static string GetIconPackPackageIdForTheme(SleepTheme theme)
+    {
+        return $"lenno.MacroDeckSleep{theme}";
+    }
+
     public static bool GoToSleepProfile(string clientId)
     {
         EnsureSleepProfileLayout();
