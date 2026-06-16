@@ -21,6 +21,8 @@ public enum SleepTheme
     Glacier
 }
 
+internal readonly record struct GridSize(int Rows, int Columns);
+
 internal static class SleepProfileController
 {
     public const string SleepProfileName = "Macrodeck Sleeping";
@@ -68,6 +70,14 @@ internal static class SleepProfileController
     public static string GetIconPackPackageIdForTheme(SleepTheme theme)
     {
         return $"lenno.MacroDeckSleep{theme}";
+    }
+
+    public static GridSize GetTargetGridSize()
+    {
+        var sourceProfile = GetSourceProfile();
+        var rows = sourceProfile?.Rows ?? 3;
+        var columns = sourceProfile?.Columns ?? 5;
+        return new GridSize(Math.Clamp(rows, 1, 12), Math.Clamp(columns, 1, 12));
     }
 
     public static bool GoToSleepProfile(string clientId)
@@ -126,11 +136,13 @@ internal static class SleepProfileController
             return;
         }
 
-        profile.Rows = 3;
-        profile.Columns = 5;
-        profile.ButtonSpacing = 10;
-        profile.ButtonRadius = 40;
-        profile.ButtonBackground = true;
+        var sourceProfile = GetSourceProfile();
+        var grid = GetTargetGridSize();
+        profile.Rows = grid.Rows;
+        profile.Columns = grid.Columns;
+        profile.ButtonSpacing = sourceProfile?.ButtonSpacing ?? 10;
+        profile.ButtonRadius = sourceProfile?.ButtonRadius ?? 40;
+        profile.ButtonBackground = sourceProfile?.ButtonBackground ?? true;
 
         var root = profile.Folders.FirstOrDefault(folder => folder.IsRootFolder)
             ?? profile.Folders.FirstOrDefault();
@@ -159,7 +171,8 @@ internal static class SleepProfileController
             for (var column = 0; column < profile.Columns; column++)
             {
                 var index = row * profile.Columns + column + 1;
-                var icon = $"{sleepIconPackName}.tile_{index:00}";
+                var iconIndex = ((index - 1) % 15) + 1;
+                var icon = $"{sleepIconPackName}.tile_{iconIndex:00}";
                 var button = new ActionButton
                 {
                     Position_X = column,
@@ -201,12 +214,13 @@ internal static class SleepProfileController
         var profile = ProfileManager.FindProfileByDisplayName(SleepProfileName);
         var root = profile?.Folders.FirstOrDefault(folder => folder.IsRootFolder)
             ?? profile?.Folders.FirstOrDefault();
-        if (profile is null || root is null || profile.Rows != 3 || profile.Columns != 5)
+        var grid = GetTargetGridSize();
+        if (profile is null || root is null || profile.Rows != grid.Rows || profile.Columns != grid.Columns)
         {
             return false;
         }
 
-        if (root.ActionButtons.Count != 15)
+        if (root.ActionButtons.Count != grid.Rows * grid.Columns)
         {
             return false;
         }
@@ -216,6 +230,19 @@ internal static class SleepProfileController
             button.Actions.Any(action => action is WakeFromSleepProfileAction) &&
             button.IconOff.StartsWith($"{sleepIconPackName}.tile_", StringComparison.Ordinal) &&
             button.IconOn.StartsWith($"{sleepIconPackName}.tile_", StringComparison.Ordinal));
+    }
+
+    private static MacroDeckProfile? GetSourceProfile()
+    {
+        var currentProfile = ProfileManager.CurrentProfile;
+        if (currentProfile is not null &&
+            !currentProfile.DisplayName.Equals(SleepProfileName, StringComparison.OrdinalIgnoreCase))
+        {
+            return currentProfile;
+        }
+
+        return ProfileManager.Profiles.FirstOrDefault(profile =>
+            !profile.DisplayName.Equals(SleepProfileName, StringComparison.OrdinalIgnoreCase));
     }
 
     private static SleepTheme GetTheme()

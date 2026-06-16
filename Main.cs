@@ -1,4 +1,5 @@
 using SuchByte.MacroDeck.Plugins;
+using System.Reflection;
 
 namespace MacroDeckSleepMode;
 
@@ -6,6 +7,10 @@ public sealed class Main : MacroDeckPlugin
 {
     public Main()
     {
+        SetPluginMetadata("Name", "MacroDeck Sleep Mode");
+        SetPluginMetadata("Version", "1.0.2");
+        SetPluginMetadata("Author", "lenno");
+
         if (!PluginManager.UpdatedPlugins.Contains(this))
         {
             PluginManager.UpdatedPlugins.Add(this);
@@ -26,20 +31,14 @@ public sealed class Main : MacroDeckPlugin
         SleepProfileController.SetPlugin(this);
         Actions = new List<PluginAction>
         {
-            new ToggleSleepModeAction(),
-            new SleepModeOnAction(),
-            new SleepModeOffAction(),
-            new GoToSleepProfileAction(),
-            new WakeFromSleepProfileAction(),
-            new BuildSleepProfileLayoutAction(),
-            new SetSleepThemeAuroraAction(),
-            new SetSleepThemeOceanAction(),
-            new SetSleepThemeSunsetAction(),
-            new SetSleepThemeMidnightAction(),
-            new SetSleepThemeNebulaAction(),
-            new SetSleepThemeForestAction(),
-            new SetSleepThemeEmberAction(),
-            new SetSleepThemeGlacierAction()
+            new GoToSleepProfileAction()
         };
+    }
+
+    private void SetPluginMetadata(string propertyName, string value)
+    {
+        typeof(MacroDeckPlugin)
+            .GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            ?.SetValue(this, value);
     }
 }
