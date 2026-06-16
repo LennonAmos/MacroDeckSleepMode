@@ -58,7 +58,6 @@ internal sealed class SleepModeConfigurator : Form
             ForeColor = Color.FromArgb(214, 214, 214)
         };
         themePicker.SelectedIndexChanged += (_, _) => UpdateRequirementLabel();
-        UpdateRequirementLabel();
 
         installButton = new Button
         {
@@ -69,6 +68,7 @@ internal sealed class SleepModeConfigurator : Form
             Height = 34
         };
         installButton.Click += (_, _) => InstallRequiredIconPack();
+        UpdateRequirementLabel();
 
         var buildButton = new Button
         {
