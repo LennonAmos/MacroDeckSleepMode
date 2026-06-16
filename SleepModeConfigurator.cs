@@ -5,6 +5,7 @@ namespace MacroDeckSleepMode;
 internal sealed class SleepModeConfigurator : Form
 {
     private readonly ComboBox themePicker;
+    private readonly Label requirementLabel;
 
     public SleepModeConfigurator()
     {
@@ -15,7 +16,7 @@ internal sealed class SleepModeConfigurator : Form
         MinimizeBox = false;
         ShowIcon = false;
         Width = 430;
-        Height = 260;
+        Height = 300;
 
         var title = new Label
         {
@@ -44,11 +45,23 @@ internal sealed class SleepModeConfigurator : Form
         themePicker.Items.AddRange(Enum.GetNames<SleepTheme>());
         themePicker.SelectedItem = SleepProfileController.GetCurrentTheme().ToString();
 
+        requirementLabel = new Label
+        {
+            AutoSize = false,
+            Left = 24,
+            Top = 128,
+            Width = 360,
+            Height = 44,
+            ForeColor = Color.FromArgb(214, 214, 214)
+        };
+        themePicker.SelectedIndexChanged += (_, _) => UpdateRequirementLabel();
+        UpdateRequirementLabel();
+
         var buildButton = new Button
         {
             Text = "Rebuild sleep profile",
             Left = 24,
-            Top = 142,
+            Top = 182,
             Width = 170,
             Height = 34
         };
@@ -62,7 +75,7 @@ internal sealed class SleepModeConfigurator : Form
         {
             Text = "Open settings folder",
             Left = 214,
-            Top = 142,
+            Top = 182,
             Width = 170,
             Height = 34
         };
@@ -82,7 +95,7 @@ internal sealed class SleepModeConfigurator : Form
             Text = "Save",
             DialogResult = DialogResult.OK,
             Left = 214,
-            Top = 188,
+            Top = 228,
             Width = 80,
             Height = 30
         };
@@ -93,7 +106,7 @@ internal sealed class SleepModeConfigurator : Form
             Text = "Close",
             DialogResult = DialogResult.Cancel,
             Left = 304,
-            Top = 188,
+            Top = 228,
             Width = 80,
             Height = 30
         };
@@ -103,6 +116,7 @@ internal sealed class SleepModeConfigurator : Form
             title,
             themeLabel,
             themePicker,
+            requirementLabel,
             buildButton,
             folderButton,
             saveButton,
@@ -111,6 +125,12 @@ internal sealed class SleepModeConfigurator : Form
 
         AcceptButton = saveButton;
         CancelButton = closeButton;
+    }
+
+    private void UpdateRequirementLabel()
+    {
+        var selected = themePicker.SelectedItem?.ToString() ?? SleepTheme.Aurora.ToString();
+        requirementLabel.Text = $"Required icon pack: MacroDeck Sleep {selected}";
     }
 
     private void SaveTheme()

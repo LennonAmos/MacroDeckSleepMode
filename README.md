@@ -4,6 +4,8 @@ Safe Macro Deck 2 plugin for Windows that switches to a dedicated animated sleep
 
 This local-development build opts out of Macro Deck's extension-store update check to avoid public-store 404 log errors before the plugin is published.
 
+Important: each animated theme requires its matching icon pack from the Macro Deck Extension Store. For example, the `Aurora` theme requires the `MacroDeck Sleep Aurora` icon pack.
+
 ## What It Does
 
 Adds these actions:
@@ -31,6 +33,8 @@ Adds these actions:
 `Go To Sleep Profile` creates or refreshes a `Macrodeck Sleeping` profile with a 3x5 grid before switching to it. Every button in that sleep profile is a wake button, and every button uses a synchronized GIF tile from the selected local icon pack. Together they form a joined animated `Macrodeck Sleeping` layout.
 
 When sleep is triggered, the plugin remembers the current profile for that device and switches to `Macrodeck Sleeping`. When any sleep profile button is pressed, it switches that same device back to the remembered profile.
+
+If a theme is selected but its matching icon pack is not installed, Macro Deck cannot display that theme's animated tiles.
 
 Theme selection is saved in:
 
@@ -84,8 +88,9 @@ LICENSE
 ```
 
 4. Start Macro Deck.
-5. Add `Go To Sleep Profile` to one normal-profile button.
-6. Add one of the `Sleep Theme: ...` actions if you want a theme selector.
+5. Install at least one matching `MacroDeck Sleep ...` icon pack.
+6. Add `Go To Sleep Profile` to one normal-profile button.
+7. Add one of the `Sleep Theme: ...` actions if you want a theme selector.
 
 ## Build
 

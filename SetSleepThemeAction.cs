@@ -9,7 +9,8 @@ public abstract class SetSleepThemeAction : PluginAction
 
     public override string Name => $"Sleep Theme: {Theme}";
 
-    public override string Description => $"Use the {Theme} sleep background animation.";
+    public override string Description =>
+        $"Use the {Theme} sleep background animation. Requires the MacroDeck Sleep {Theme} icon pack.";
 
     public override void Trigger(string clientId, ActionButton actionButton)
     {
