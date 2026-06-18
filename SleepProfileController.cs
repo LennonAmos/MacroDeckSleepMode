@@ -18,7 +18,11 @@ public enum SleepTheme
     Nebula,
     Forest,
     Ember,
-    Glacier
+    Glacier,
+    Starlight,
+    Rainfall,
+    Firefly,
+    Prism
 }
 
 internal readonly record struct GridSize(int Rows, int Columns);
@@ -26,7 +30,7 @@ internal readonly record struct GridSize(int Rows, int Columns);
 internal static class SleepProfileController
 {
     public const string SleepProfileName = "Macrodeck Sleeping";
-    private const string ThemeVariableName = "macrodeck_sleep_theme_dev";
+    private const string ThemeVariableName = "macrodeck_sleep_theme";
     private static readonly Dictionary<string, string> PreviousProfileByClient = new();
     private static readonly object ThemeGate = new();
     private static MacroDeckPlugin? plugin;
@@ -181,7 +185,7 @@ internal static class SleepProfileController
                     IconOn = icon,
                     BackColorOff = Color.FromArgb(24, 24, 28),
                     BackColorOn = Color.FromArgb(34, 34, 40),
-                    StateBindingVariable = "macrodeck_sleeping_dev",
+                    StateBindingVariable = "macrodeck_sleeping",
                     LabelOff = CreateTileLabel(),
                     LabelOn = CreateTileLabel(),
                     Actions = [new WakeFromSleepProfileAction()],
@@ -276,6 +280,10 @@ internal static class SleepProfileController
             SleepTheme.Forest => "MacroDeck Sleep Forest",
             SleepTheme.Ember => "MacroDeck Sleep Ember",
             SleepTheme.Glacier => "MacroDeck Sleep Glacier",
+            SleepTheme.Starlight => "MacroDeck Sleep Starlight",
+            SleepTheme.Rainfall => "MacroDeck Sleep Rainfall",
+            SleepTheme.Firefly => "MacroDeck Sleep Firefly",
+            SleepTheme.Prism => "MacroDeck Sleep Prism",
             _ => "MacroDeck Sleep Aurora"
         };
     }
@@ -339,7 +347,11 @@ internal static class SleepProfileController
             SleepTheme.Nebula.ToString(),
             SleepTheme.Forest.ToString(),
             SleepTheme.Ember.ToString(),
-            SleepTheme.Glacier.ToString()
+            SleepTheme.Glacier.ToString(),
+            SleepTheme.Starlight.ToString(),
+            SleepTheme.Rainfall.ToString(),
+            SleepTheme.Firefly.ToString(),
+            SleepTheme.Prism.ToString()
         });
     }
 

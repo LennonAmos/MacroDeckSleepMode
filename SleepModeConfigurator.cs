@@ -270,7 +270,7 @@ internal sealed class SleepModeConfigurator : Form
         using var background = new System.Drawing.Drawing2D.LinearGradientBrush(bounds, GetPreviewColor(theme, 0), GetPreviewColor(theme, 1), 30f);
         graphics.FillRectangle(background, bounds);
 
-        DrawWaves(graphics, bounds, theme, phase);
+        DrawThemeMotion(graphics, bounds, theme, phase);
 
         var layout = GetPreviewLayout(bounds, grid);
 
@@ -360,6 +360,28 @@ internal sealed class SleepModeConfigurator : Form
         return new Font("Segoe UI Semibold", minSize, FontStyle.Bold);
     }
 
+    private static void DrawThemeMotion(Graphics graphics, Rectangle bounds, SleepTheme theme, float phase)
+    {
+        switch (theme)
+        {
+            case SleepTheme.Starlight:
+                DrawStarlightPreview(graphics, bounds, phase);
+                break;
+            case SleepTheme.Rainfall:
+                DrawRainfallPreview(graphics, bounds, phase);
+                break;
+            case SleepTheme.Firefly:
+                DrawFireflyPreview(graphics, bounds, phase);
+                break;
+            case SleepTheme.Prism:
+                DrawPrismPreview(graphics, bounds, phase);
+                break;
+            default:
+                DrawWaves(graphics, bounds, theme, phase);
+                break;
+        }
+    }
+
     private static void DrawWaves(Graphics graphics, Rectangle bounds, SleepTheme theme, float phase)
     {
         var colors = GetWaveColors(theme);
@@ -389,6 +411,107 @@ internal sealed class SleepModeConfigurator : Form
 
             using var brush = new SolidBrush(Color.FromArgb(70 - layer * 12, colors[layer]));
             graphics.FillPath(brush, path);
+        }
+    }
+
+    private static void DrawStarlightPreview(Graphics graphics, Rectangle bounds, float phase)
+    {
+        var loop = phase * MathF.Tau;
+        for (var i = 0; i < 58; i++)
+        {
+            var x = bounds.Left + ((i * 73) % Math.Max(1, bounds.Width)) + MathF.Sin(loop + i * 0.57f) * 6f;
+            var y = bounds.Top + ((i * 41) % Math.Max(1, bounds.Height)) + MathF.Cos(loop * 0.7f + i * 0.34f) * 5f;
+            var size = 1.2f + (i % 4) * 0.65f;
+            var alpha = 58 + (int)(70 * (0.5f + 0.5f * MathF.Sin(loop + i * 0.4f)));
+            using var brush = new SolidBrush(Color.FromArgb(alpha, 238, 246, 255));
+            graphics.FillEllipse(brush, x, y, size, size);
+        }
+
+        for (var i = 0; i < 4; i++)
+        {
+            var radius = bounds.Width * (0.12f + i * 0.025f);
+            var x = bounds.Left + bounds.Width * (0.16f + i * 0.22f) + MathF.Sin(loop + i) * 18f;
+            var y = bounds.Top + bounds.Height * (0.22f + (i % 2) * 0.36f) + MathF.Cos(loop * 0.85f + i) * 14f;
+            using var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(x - radius, y - radius, radius * 2f, radius * 2f);
+            using var glow = new System.Drawing.Drawing2D.PathGradientBrush(path)
+            {
+                CenterColor = Color.FromArgb(42, 118, 150, 255),
+                SurroundColors = [Color.FromArgb(0, 118, 150, 255)]
+            };
+            graphics.FillPath(glow, path);
+        }
+    }
+
+    private static void DrawRainfallPreview(Graphics graphics, Rectangle bounds, float phase)
+    {
+        var span = bounds.Height + 100f;
+        using var pen = new Pen(Color.FromArgb(60, 190, 226, 255), 1.4f)
+        {
+            StartCap = System.Drawing.Drawing2D.LineCap.Round,
+            EndCap = System.Drawing.Drawing2D.LineCap.Round
+        };
+
+        for (var i = 0; i < 76; i++)
+        {
+            var baseX = bounds.Left + ((i * 47) % (bounds.Width + 90)) - 45f;
+            var y = bounds.Top + (((i * 31) + phase * span * (1f + (i % 5) * 0.05f)) % span) - 70f;
+            var x = baseX + ((y - bounds.Top) / Math.Max(1f, bounds.Height)) * 28f;
+            var length = 18f + (i % 7) * 4f;
+            pen.Color = Color.FromArgb(32 + (i % 5) * 10, 190, 226, 255);
+            graphics.DrawLine(pen, x, y, x + 12f, y + length);
+        }
+    }
+
+    private static void DrawFireflyPreview(Graphics graphics, Rectangle bounds, float phase)
+    {
+        var loop = phase * MathF.Tau;
+        for (var i = 0; i < 28; i++)
+        {
+            var cx = bounds.Left + ((i * 71) % Math.Max(1, bounds.Width));
+            var cy = bounds.Top + ((i * 43) % Math.Max(1, bounds.Height));
+            var x = cx + MathF.Sin(loop * (0.7f + (i % 4) * 0.08f) + i) * (12f + (i % 6) * 5f);
+            var y = cy + MathF.Cos(loop * (0.8f + (i % 5) * 0.06f) + i * 0.7f) * (10f + (i % 5) * 4f);
+            var radius = 11f + (i % 5) * 3.5f;
+            var alpha = 66 + (int)(60 * (0.5f + 0.5f * MathF.Sin(loop + i * 0.5f)));
+
+            using var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(x - radius, y - radius, radius * 2f, radius * 2f);
+            using var glow = new System.Drawing.Drawing2D.PathGradientBrush(path)
+            {
+                CenterColor = Color.FromArgb(alpha, 255, 226, 104),
+                SurroundColors = [Color.FromArgb(0, 255, 226, 104)]
+            };
+            graphics.FillPath(glow, path);
+        }
+    }
+
+    private static void DrawPrismPreview(Graphics graphics, Rectangle bounds, float phase)
+    {
+        for (var i = 0; i < 12; i++)
+        {
+            var baseX = bounds.Left + ((i * 81) % (bounds.Width + 130)) - 65f;
+            var baseY = bounds.Top + ((i * 53) % (bounds.Height + 90)) - 45f;
+            var x = baseX + ((phase * 70f + (i % 4) * 12f) % 70f);
+            var y = baseY + MathF.Sin(phase * MathF.Tau + i) * 10f;
+            var width = 56f + (i % 5) * 18f;
+            var height = 34f + (i % 4) * 14f;
+            var color = (i % 4) switch
+            {
+                0 => Color.FromArgb(34, 88, 222, 255),
+                1 => Color.FromArgb(32, 238, 106, 216),
+                2 => Color.FromArgb(30, 255, 196, 92),
+                _ => Color.FromArgb(32, 138, 118, 255)
+            };
+            var points = new[]
+            {
+                new PointF(x, y + height * 0.18f),
+                new PointF(x + width * 0.72f, y),
+                new PointF(x + width, y + height * 0.84f),
+                new PointF(x + width * 0.24f, y + height)
+            };
+            using var brush = new SolidBrush(color);
+            graphics.FillPolygon(brush, points);
         }
     }
 
@@ -426,6 +549,10 @@ internal sealed class SleepModeConfigurator : Form
             SleepTheme.Forest => index == 0 ? Color.FromArgb(20, 58, 42) : Color.FromArgb(88, 130, 76),
             SleepTheme.Ember => index == 0 ? Color.FromArgb(70, 30, 26) : Color.FromArgb(190, 86, 48),
             SleepTheme.Glacier => index == 0 ? Color.FromArgb(36, 74, 94) : Color.FromArgb(146, 198, 206),
+            SleepTheme.Starlight => index == 0 ? Color.FromArgb(11, 16, 44) : Color.FromArgb(60, 66, 136),
+            SleepTheme.Rainfall => index == 0 ? Color.FromArgb(14, 30, 42) : Color.FromArgb(64, 90, 104),
+            SleepTheme.Firefly => index == 0 ? Color.FromArgb(12, 36, 28) : Color.FromArgb(70, 92, 50),
+            SleepTheme.Prism => index == 0 ? Color.FromArgb(30, 22, 54) : Color.FromArgb(98, 58, 128),
             _ => index == 0 ? Color.FromArgb(32, 44, 82) : Color.FromArgb(84, 128, 190)
         };
     }

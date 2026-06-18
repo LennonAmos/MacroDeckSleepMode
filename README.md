@@ -10,25 +10,12 @@ Important: each animated theme requires its matching icon pack from the Macro De
 
 Adds these actions:
 
-- `Toggle Sleep Mode`
-- `Sleep Mode On`
-- `Sleep Mode Off`
 - `Go To Sleep Profile`
-- `Wake From Sleep Profile`
-- `Build Sleep Profile Layout`
-- `Sleep Theme: Aurora`
-- `Sleep Theme: Ocean`
-- `Sleep Theme: Sunset`
-- `Sleep Theme: Midnight`
-- `Sleep Theme: Nebula`
-- `Sleep Theme: Forest`
-- `Sleep Theme: Ember`
-- `Sleep Theme: Glacier`
 
 ## Recommended Setup
 
 1. On your normal profile, put `Go To Sleep Profile` on your sleep button.
-2. Optional: add one of the `Sleep Theme: ...` actions to change the background animation theme.
+2. Use the plugin configurator to choose the background animation theme.
 
 `Go To Sleep Profile` creates or refreshes a `Macrodeck Sleeping` profile with a 3x5 grid before switching to it. Every button in that sleep profile is a wake button, and every button uses a synchronized GIF tile from the selected local icon pack. Together they form a joined animated `Macrodeck Sleeping` layout.
 
@@ -52,6 +39,10 @@ The matching themed icon packs are:
 - `MacroDeck Sleep Forest`
 - `MacroDeck Sleep Ember`
 - `MacroDeck Sleep Glacier`
+- `MacroDeck Sleep Starlight`
+- `MacroDeck Sleep Rainfall`
+- `MacroDeck Sleep Firefly`
+- `MacroDeck Sleep Prism`
 
 Creates and updates these variables:
 
@@ -90,7 +81,6 @@ LICENSE
 4. Start Macro Deck.
 5. Add `Go To Sleep Profile` to one normal-profile button.
 6. Open the plugin configurator, pick a theme, and use `Install required icon pack` if needed.
-7. Add one of the `Sleep Theme: ...` actions if you want a theme selector.
 
 ## Build
 
@@ -114,13 +104,7 @@ The repository root should contain:
 - `ExtensionIcon.png`
 - `MacroDeckSleepMode.csproj`
 - `Main.cs`
-- `ToggleSleepModeAction.cs`
-- `SleepModeOnAction.cs`
-- `SleepModeOffAction.cs`
 - `GoToSleepProfileAction.cs`
-- `WakeFromSleepProfileAction.cs`
-- `BuildSleepProfileLayoutAction.cs`
-- `SetSleepThemeAction.cs`
 - `SleepProfileController.cs`
 - `SleepModeController.cs`
 - `README.md`
